@@ -4,21 +4,40 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-<!--
     <bean class="ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepositoryImpl" id="inmemoryUserRepository"/>
 
-    <bean class="ru.javawebinar.topjava.service.UserServiceImpl">
+    <bean class="ru.javawebinar.topjava.service.UserServiceImpl" id="userService">
         <constructor-arg name="repository" ref="inmemoryUserRepository"/>
     </bean>
--->
+
+    <bean class="ru.javawebinar.topjava.web.user.AdminRestController" id="adminRestController">
+        <constructor-arg name="service" ref="userService"/>
+    </bean>
+
+    <bean class="ru.javawebinar.topjava.web.user.ProfileRestController" id="profileRestController">
+        <constructor-arg name="service" ref="userService"/>
+    </bean>
+
+    <bean class="ru.javawebinar.topjava.repository.inmemory.InMemoryMealRepositoryImpl" id="inMemoryMealRepository"/>
+
+    <bean class="ru.javawebinar.topjava.service.MealServiceImpl" id="mealService">
+        <constructor-arg name="repository" ref="inMemoryMealRepository"/>
+    </bean>
+
+    <bean class="ru.javawebinar.topjava.web.meal.MealRestController">
+        <constructor-arg name="service" ref="mealService"/>
+    </bean>
 
     <!-- Not necessary, already included with component-scan -->
     <!--<context:annotation-config/>-->
 
+
+    <!--
     <context:component-scan base-package="ru.javawebinar.**.repository"/>
 
     <context:component-scan base-package="ru.javawebinar.**.service"/>
 
     <context:component-scan base-package="ru.javawebinar.**.web"/>
+    -->
 
 </beans>
