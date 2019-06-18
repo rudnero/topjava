@@ -49,7 +49,7 @@ public class MealServlet extends HttpServlet {
         if (id.isEmpty()) {
             mealRestController.create(meal);
         } else {
-            mealRestController.update(meal);
+            mealRestController.update(meal, Integer.parseInt(id));
         }
         response.sendRedirect("meals");
     }

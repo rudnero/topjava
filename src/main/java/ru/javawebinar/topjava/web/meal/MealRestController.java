@@ -1,47 +1,62 @@
 package ru.javawebinar.topjava.web.meal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
+import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
+
 @Controller
-public class MealRestController extends AbstractMealController{
+public class MealRestController {
+    private static final Logger LOG = LoggerFactory.getLogger(MealRestController.class);
 
+    private final MealService service;
+
+    @Autowired
     public MealRestController(MealService service) {
-        super(service);
+        this.service = service;
     }
 
-    @Override
     public Meal create(Meal meal) {
-        return super.create(meal);
+        LOG.info("create {}", meal);
+        checkNew(meal);
+        return service.create(meal, SecurityUtil.authUserId());
     }
 
-    @Override
-    public void update(Meal meal) {
-        super.update(meal);
+    public void update (Meal meal, Integer id) {
+        LOG.info("update {}", meal);
+        assureIdConsistent(meal, id);
+        service.update(meal, SecurityUtil.authUserId());
     }
 
-    @Override
-    public void delete(int id) {
-        super.delete(id);
+    public void delete (int id) {
+        LOG.info("delete {}", id);
+        service.delete(id, SecurityUtil.authUserId());
     }
 
-    @Override
-    public Meal get(int id) {
-        return super.get(id);
+    public Meal get (int id) {
+        return service.get(id, SecurityUtil.authUserId());
     }
 
-    @Override
-    public List<MealTo> getAll() {
-        return super.getAll();
+    public List<MealTo> getAll () {
+        LOG.info("getAll");
+        return MealsUtil.getWithExcess(service.getAll(SecurityUtil.authUserId()), SecurityUtil.authUserCaloriesPerDay());
+
     }
 
-    @Override
-    public List<MealTo> getFiltered(LocalDate start, LocalDate end) {
-        return super.getFiltered(start, end);
+    public List<MealTo> getFiltered (LocalDate start, LocalDate end) {
+        LOG.info("getFiltered {} {}", start, end);
+        List<Meal> meals = service.getFiltered(SecurityUtil.authUserId(), start, end);
+        return MealsUtil.getWithExcess(meals, SecurityUtil.authUserCaloriesPerDay());
     }
 }

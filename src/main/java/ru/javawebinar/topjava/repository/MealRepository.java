@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface MealRepository {
-    Meal save(Meal meal);
+    Meal save(Meal meal, Integer userId);
 
     // false if not found
     boolean delete(int id, int userId);

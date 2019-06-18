@@ -25,15 +25,15 @@
     <br><br>
     <dl>
         <dt>От даты:</dt>
-        <dd><input type="date" name="startDate" required></dd>
+        <dd><input type="date" name="startDate"></dd>
         <dt>До даты:</dt>
-        <dd><input type="date" name="endDate" required></dd>
+        <dd><input type="date" name="endDate"></dd>
     </dl>
     <dl>
         <dt>От времени:</dt>
-        <dd><input type="time" name="startTime" required></dd>
+        <dd><input type="time" name="startTime"></dd>
         <dt>До времени:</dt>
-        <dd><input type="time" name="endTime" required></dd>
+        <dd><input type="time" name="endTime"></dd>
     </dl>
     <button type="submit">Отфильтровать</button>
     <table border="1" cellpadding="8" cellspacing="0">

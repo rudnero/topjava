@@ -11,7 +11,6 @@ import ru.javawebinar.topjava.util.UsersUtil;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -61,13 +60,10 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     @Override
     public User getByEmail(String email) {
         log.info("getByEmail {}", email);
-        try {
             return this.getAll().stream()
                     .distinct()
                     .filter(user -> user.getEmail().equals(email))
-                    .findFirst().get();
-        } catch (NoSuchElementException e) {
-            return null;
-        }
+                    .findFirst().orElse(null);
+
     }
 }
