@@ -70,7 +70,6 @@ public class MealRestController {
                     meal.getTime(),
                     startTime==null ? LocalTime.MIN : startTime, endTime==null ? LocalTime.MAX : endTime))
                 .collect(Collectors.toList());
-
         return MealsUtil.getWithExcess(mealsSortedTime, SecurityUtil.authUserCaloriesPerDay());
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.DateTimeUtil;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,6 +25,10 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     private Map<Integer, Map<Integer, Meal>> repository = new ConcurrentHashMap<>();
 
     private AtomicInteger counter = new AtomicInteger(0);
+
+    {
+        MealsUtil.MEALS.forEach(meal -> this.save(meal, InMemoryUserRepositoryImpl.DEFAULT_USER_ID));
+    }
 
     @Override
     public Meal save(Meal meal, Integer userId) {
@@ -62,11 +67,11 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
 
     @Override
     public List<Meal> getFiltered(int userId, LocalDate start, LocalDate end) {
+        LOG.info("getFiltered {} {} {}", userId, start, end);
         return getSortedFilteredList(userId, meal -> DateTimeUtil.isBetween(meal.getDate(), start, end));
     }
 
     private List<Meal> getSortedFilteredList(Integer userId, Predicate<Meal> filter) {
-        LOG.info("getSortedFilteredList {}", userId);
         Map<Integer, Meal> userMeals = repository.get(userId);
         return userMeals == null ? new ArrayList<>() : userMeals.values().stream()
                 .filter(filter)

@@ -21,6 +21,8 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     private Map<Integer, User> repository = new ConcurrentHashMap<>();
     private AtomicInteger counter = new AtomicInteger(0);
 
+    static final int DEFAULT_USER_ID = 1;
+
     {
         UsersUtil.USERS.forEach(this::save);
     }
