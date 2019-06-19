@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 public class InMemoryMealRepositoryImpl implements MealRepository {
     private static final Logger LOG = LoggerFactory.getLogger(InMemoryMealRepositoryImpl.class);
 
-    //private Map<Integer, Meal> repository = new ConcurrentHashMap<>();
     private Map<Integer, Map<Integer, Meal>> repository = new ConcurrentHashMap<>();
 
     private AtomicInteger counter = new AtomicInteger(0);
@@ -31,11 +30,11 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
         LOG.info("save {}", meal);
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
-            meal.setUserId(userId);
-        } else if (!meal.getUserId().equals(userId)) {
+        } else if (this.get(meal.getId(), userId) == null) {
             return null;
         }
 
+        meal.setUserId(userId);
         Map<Integer, Meal> userMeals = repository.computeIfAbsent(userId, HashMap::new);
         userMeals.put(meal.getId(), meal);
         return meal;
@@ -70,8 +69,8 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
         LOG.info("getSortedFilteredList {}", userId);
         Map<Integer, Meal> userMeals = repository.get(userId);
         return userMeals == null ? new ArrayList<>() : userMeals.values().stream()
-                .sorted((m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()))
                 .filter(filter)
+                .sorted((m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()))
                 .collect(Collectors.toList());
     }
 }
