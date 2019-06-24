@@ -1,10 +1,9 @@
 package ru.javawebinar.topjava.service;
 
+import org.assertj.core.api.ObjectAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.init.ScriptStatementFailedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
@@ -19,7 +18,8 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static ru.javawebinar.topjava.MealTestData.assertMatch;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
@@ -35,7 +35,7 @@ public class MealServiceTest {
     @Test
     public void get() {
         Meal meal = service.get(MealTestData.USER_MEAL_ID_3, UserTestData.USER_ID);
-        assertEquals(meal, MealTestData.USER_MEAL_3);
+        assertMatch(meal, MealTestData.USER_MEAL_3);
     }
 
     @Test(expected = NotFoundException.class)
@@ -47,13 +47,13 @@ public class MealServiceTest {
     public void delete() {
         service.delete(MealTestData.USER_MEAL_ID_3, UserTestData.USER_ID);
         List<Meal> expectedlMeals = Arrays.asList(
-                MealTestData.USER_MEAL_4,
-                MealTestData.USER_MEAL_5,
-                MealTestData.USER_MEAL_6,
+                MealTestData.USER_MEAL_8,
                 MealTestData.USER_MEAL_7,
-                MealTestData.USER_MEAL_8
+                MealTestData.USER_MEAL_6,
+                MealTestData.USER_MEAL_5,
+                MealTestData.USER_MEAL_4
         );
-        assertEquals(expectedlMeals, service.getAll(UserTestData.USER_ID));
+        assertMatch(service.getAll(UserTestData.USER_ID), expectedlMeals);
     }
 
     @Test(expected = NotFoundException.class)
@@ -69,7 +69,7 @@ public class MealServiceTest {
                 MealTestData.USER_MEAL_4,
                 MealTestData.USER_MEAL_3
         );
-        assertEquals(expectedMeals, actualMeals);
+        assertMatch(actualMeals, expectedMeals);
     }
 
     @Test
@@ -80,21 +80,21 @@ public class MealServiceTest {
                 MealTestData.USER_MEAL_4,
                 MealTestData.USER_MEAL_3
         );
-        assertEquals(expectedMeals, actualMeals);
+        assertMatch(actualMeals, expectedMeals);
     }
 
     @Test
     public void getAll() {
         List<Meal> actualMeals = service.getAll(UserTestData.ADMIN_ID);
         List<Meal> expectedMeals = Arrays.asList(
-                MealTestData.ADMIN_MEAL_9,
-                MealTestData.ADMIN_MEAL_10,
-                MealTestData.ADMIN_MEAL_11,
-                MealTestData.ADMIN_MEAL_12,
+                MealTestData.ADMIN_MEAL_14,
                 MealTestData.ADMIN_MEAL_13,
-                MealTestData.ADMIN_MEAL_14
+                MealTestData.ADMIN_MEAL_12,
+                MealTestData.ADMIN_MEAL_11,
+                MealTestData.ADMIN_MEAL_10,
+                MealTestData.ADMIN_MEAL_9
         );
-        assertEquals(expectedMeals, actualMeals);
+        assertMatch(actualMeals, expectedMeals);
     }
 
     @Test
@@ -103,7 +103,7 @@ public class MealServiceTest {
         updated.setCalories(700);
         updated.setDescription("updated");
         service.update(updated, UserTestData.USER_ID);
-        assertEquals(updated, service.get(MealTestData.USER_MEAL_ID_3, UserTestData.USER_ID));
+        assertMatch(service.get(MealTestData.USER_MEAL_ID_3, UserTestData.USER_ID), updated);
     }
 
     @Test(expected = NotFoundException.class)
@@ -121,14 +121,14 @@ public class MealServiceTest {
         newMeal.setId(created.getId());
 
         List<Meal> expectedlMeals = Arrays.asList(
-                MealTestData.USER_MEAL_3,
-                MealTestData.USER_MEAL_4,
-                MealTestData.USER_MEAL_5,
-                MealTestData.USER_MEAL_6,
-                MealTestData.USER_MEAL_7,
+                newMeal,
                 MealTestData.USER_MEAL_8,
-                newMeal
+                MealTestData.USER_MEAL_7,
+                MealTestData.USER_MEAL_6,
+                MealTestData.USER_MEAL_5,
+                MealTestData.USER_MEAL_4,
+                MealTestData.USER_MEAL_3
         );
-        assertEquals(expectedlMeals, service.getAll(UserTestData.USER_ID));
+        assertMatch(service.getAll(UserTestData.USER_ID), expectedlMeals);
     }
 }
