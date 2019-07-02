@@ -7,7 +7,6 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.MealRepository;
 
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
@@ -30,13 +29,7 @@ public class JpaMealRepository implements MealRepository {
             em.persist(meal);
             return meal;
         } else {
-            return em.createNamedQuery(Meal.UPDATE)
-                    .setParameter("description", meal.getDescription())
-                    .setParameter("calories", meal.getCalories())
-                    .setParameter("date_time", meal.getDateTime())
-                    .setParameter("id", meal.getId())
-                    .setParameter("user_id", meal.getUser().getId())
-                    .executeUpdate() == 0 ? null : meal;
+            return this.get(meal.getId(), userId) != null ? em.merge(meal) : null;
         }
     }
 
@@ -51,13 +44,8 @@ public class JpaMealRepository implements MealRepository {
 
     @Override
     public Meal get(int id, int userId) {
-//        return em.find(Meal.class, id);
-        return DataAccessUtils.singleResult(
-                em.createNamedQuery(Meal.GET, Meal.class)
-                .setParameter(1, id)
-                .setParameter(2, userId)
-                .getResultList()
-        );
+        Meal meal = em.find(Meal.class, id);
+        return  (meal != null) && (meal.getUser().getId() == userId ) ? meal : null;
     }
 
     @Override
