@@ -21,7 +21,7 @@ public interface MealRepository {
     // ORDERED dateTime desc
     List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId);
 
-    default Meal getWhitUserMeals(int id, int userId){
-        return null;
+    default Meal getWhitUser(int id, int userId){
+        throw new UnsupportedOperationException("Unsupported operation!");
     }
 }

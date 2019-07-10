@@ -6,6 +6,7 @@ import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.AbstractMealServiceTest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 
@@ -13,8 +14,9 @@ import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 public class DataJpaMealServiceTest extends AbstractMealServiceTest {
 
     @Test
-    public void getWhitUserMeals() {
-        Meal actual = service.getWhitUserMeals(ADMIN_MEAL_ID, ADMIN_ID);
-        assertMatch(actual, ADMIN_MEAL1);
+    public void getWhitUser() {
+        Meal actual = service.getWhitUser(ADMIN_MEAL_ID, ADMIN_ID);
+        ADMIN_MEAL1.setUser(actual.getUser());
+        assertThat(actual).isEqualToComparingFieldByField(ADMIN_MEAL1);
     }
 }
