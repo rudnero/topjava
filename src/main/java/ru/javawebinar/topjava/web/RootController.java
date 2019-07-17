@@ -31,4 +31,6 @@ public class RootController {
         SecurityUtil.setAuthUserId(userId);
         return "redirect:meals";
     }
+
+
 }
