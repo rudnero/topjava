@@ -17,10 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.ActiveDbProfileResolver;
 import ru.javawebinar.topjava.TimingRules;
 
-import java.util.Arrays;
-
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static ru.javawebinar.topjava.Profiles.JDBC;
 import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
 
 @ContextConfiguration({
@@ -45,13 +42,12 @@ abstract public class AbstractServiceTest {
 
     //  Check root cause in JUnit: https://github.com/junit-team/junit4/pull/778
     public <T extends Throwable> void validateRootCause(Runnable runnable, Class<T> exceptionClass) {
-        if (!env.acceptsProfiles(JDBC)) {
-            try {
-                runnable.run();
-                Assert.fail("Expected " + exceptionClass.getName());
-            } catch (Exception e) {
-                Assert.assertThat(getRootCause(e), instanceOf(exceptionClass));
-            }
+        try {
+            runnable.run();
+            Assert.fail("Expected " + exceptionClass.getName());
+        } catch (Exception e) {
+            Assert.assertThat(getRootCause(e), instanceOf(exceptionClass));
         }
+
     }
 }
