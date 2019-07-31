@@ -18,9 +18,6 @@ import static ru.javawebinar.topjava.web.user.ProfileRestController.REST_URL;
 
 class ProfileRestControllerTest extends AbstractControllerTest {
 
-    @Autowired
-    protected UserService userService;
-
     @Test
     void testGet() throws Exception {
         mockMvc.perform(get(REST_URL))

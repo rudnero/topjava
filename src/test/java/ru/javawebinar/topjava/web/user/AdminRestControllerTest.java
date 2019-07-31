@@ -23,9 +23,6 @@ class AdminRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = AdminRestController.REST_URL + '/';
 
-    @Autowired
-    protected UserService userService;
-
     @Test
     void testGet() throws Exception {
         mockMvc.perform(get(REST_URL + ADMIN_ID))

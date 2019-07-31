@@ -46,7 +46,7 @@ public class MealRestController extends AbstractMealController {
         int userId = SecurityUtil.authUserId();
         checkNew(meal);
         log.info("create {} for user {}", meal, userId);
-        Meal created =  service.create(meal, userId);
+        Meal created =  super.service.create(meal, userId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
