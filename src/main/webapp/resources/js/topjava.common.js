@@ -33,6 +33,13 @@ function deleteRow(id) {
 }
 
 function updateTable() {
+    if ($("#filterForm").length > 0){
+        if ($("#filterForm").attr("statusFilter") === "true") {
+            filterTable();
+            return;
+        }
+    }
+
     $.get(context.ajaxUrl, function (data) {
         context.datatableApi.clear().rows.add(data).draw();
     });
@@ -76,4 +83,8 @@ function failNoty(jqXHR) {
         type: "error",
         layout: "bottomRight"
     }).show();
+}
+
+function updateTableWithData(data) {
+    context.datatableApi.clear().rows.add(data).draw();
 }

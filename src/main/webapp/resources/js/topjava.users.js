@@ -49,7 +49,9 @@ function activate(checkbox, id){
             url: urlActivate,
             data: {active : enabled, id : id},
     }).done(function () {
-        updateTable()
+        checkbox.find("tr").attr("data-userEnabled", enabled);
         successNoty("Saved");
+    }).fail(function () {
+        checkbox.prop("checked", !enabled);
     });
 }

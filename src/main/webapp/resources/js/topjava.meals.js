@@ -7,13 +7,21 @@ function filterTable() {
     let endTime = form.find("input[name=endTime]").val();
     urlFilter += "?"+"startDate="+startDate+"&startTime="+startTime+"&endDate="+endDate+"&endTime="+endTime;
 
-    $.get(urlFilter, function (data) {
-        context.datatableApi.clear().rows.add(data).draw();
+    $.ajax({
+        type: "GET",
+        url: urlFilter,
+        data: form.serialize()
+    }).done(function (data) {
+        updateTableWithData(data);
+        form.attr("statusFilter", "true")
+        successNoty("Filtered");
     })
 }
 
 function clearFilteredTable(){
-    $("#filterForm").find(":input").val("")
+    let form = $("#filterForm");
+    form.find(":input").val("");
+    form.attr("statusFilter", "false");
     updateTable();
 }
 
