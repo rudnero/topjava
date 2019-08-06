@@ -71,4 +71,17 @@ public class JpaUserRepository implements UserRepository {
     public List<User> getAll() {
         return em.createNamedQuery(User.ALL_SORTED, User.class).getResultList();
     }
+
+    @Override
+    @Transactional
+    public boolean activate(int id, boolean active) {
+        User user = em.find(User.class, id);
+        if (user != null) {
+            user.setEnabled(active);
+            em.merge(user);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

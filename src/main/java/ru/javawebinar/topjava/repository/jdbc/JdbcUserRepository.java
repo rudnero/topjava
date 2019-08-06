@@ -115,4 +115,10 @@ public class JdbcUserRepository implements UserRepository {
         }
         return u;
     }
+
+    @Override
+    @Transactional
+    public boolean activate(int id, boolean active) {
+        return jdbcTemplate.update("UPDATE users SET enabled=? WHERE id=?", active, id)!=0;
+    }
 }

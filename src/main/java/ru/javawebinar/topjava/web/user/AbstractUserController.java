@@ -43,4 +43,9 @@ public abstract class AbstractUserController {
         assureIdConsistent(user, id);
         service.update(user);
     }
+
+    public void activate(int id, boolean active) {
+        log.info("activate {} user {}", active, id);
+        service.activate(id, active);
+    }
 }

@@ -40,3 +40,16 @@ $(function () {
         }
     );
 });
+
+function activate(checkbox, id){
+    const urlActivate = context.ajaxUrl + "activate";
+    const enabled = checkbox.is(":checked");
+    $.ajax({
+            type: "POST",
+            url: urlActivate,
+            data: {active : enabled, id : id},
+    }).done(function () {
+        updateTable()
+        successNoty("Saved");
+    });
+}
