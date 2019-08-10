@@ -93,9 +93,9 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Test
     void activate() throws Exception {
         service.activate(USER_ID, false);
-        USER.setEnabled(false);
-        assertMatch(service.get(USER_ID), USER);
-        USER.setEnabled(true);
+        User user = new User(USER);
+        user.setEnabled(false);
+        assertMatch(service.get(USER_ID), user);
     }
 
     @Test
