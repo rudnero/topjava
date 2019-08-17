@@ -5,3 +5,4 @@ target
 log
 *.patch
 /patch_8/icon-meal.png
+/patches/patch_8/icon-meal.png
