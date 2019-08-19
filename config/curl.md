@@ -30,3 +30,11 @@
 
 #### validate with Error
 `curl -s -X POST -d '{}' -H 'Content-Type: application/json' http://localhost:8080/topjava/rest/admin/users --user admin@gmail.com:admin`
+
+#### create Meals validate error
+`curl -s -X POST -d '{"dateTime":"2015-06-01T12:00","description":"","calories":300}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/topjava/rest/profile/meals --user user@yandex.ru:password`
+
+#### update Profile duplicate email
+`curl -s -X PUT -d '{"name":"newName", "email":"admin@gmail.com", "password":"12345678", "caloriesPerDay":2000}' -H 'Content-Type: application/json' http://localhost:8080/topjava/rest/profile --user user@yandex.ru:password`
+
+curl -s -X POST -d '{"name":"newName", "email":"admin@gmail.com", "password":"12345678", "caloriesPerDay":2000}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/topjava/rest/profile/register
