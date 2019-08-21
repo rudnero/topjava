@@ -36,5 +36,3 @@
 
 #### update Profile duplicate email
 `curl -s -X PUT -d '{"name":"newName", "email":"admin@gmail.com", "password":"12345678", "caloriesPerDay":2000}' -H 'Content-Type: application/json' http://localhost:8080/topjava/rest/profile --user user@yandex.ru:password`
-
-curl -s -X POST -d '{"name":"newName", "email":"admin@gmail.com", "password":"12345678", "caloriesPerDay":2000}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/topjava/rest/profile/register

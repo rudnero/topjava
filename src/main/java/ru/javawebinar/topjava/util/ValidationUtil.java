@@ -7,6 +7,8 @@ import ru.javawebinar.topjava.util.exception.IllegalRequestDataException;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.validation.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
 
@@ -60,19 +62,17 @@ public class ValidationUtil {
         return result;
     }
 
-    public static String[] getErrorResponse(BindingResult result) {
-        StringJoiner joiner = new StringJoiner("<br>");
+    public static String[] messages(BindingResult result) {
+        List<String> messages = new ArrayList<>();
         result.getFieldErrors().forEach(
                 fe -> {
-                    String msg = fe.getDefaultMessage();
+                    String msg = fe.getField() + "-" + fe.getDefaultMessage();
                     if (msg != null) {
-                        if (!msg.startsWith(fe.getField())) {
-                            msg = fe.getField() + ' ' + msg;
-                        }
-                        joiner.add(msg);
+                        messages.add(msg);
                     }
                 });
-        return new String[]{joiner.toString()};
+
+        return messages.toArray(String[]::new);
     }
 
     private static final Validator validator;

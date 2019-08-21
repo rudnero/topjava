@@ -23,7 +23,7 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static ru.javawebinar.topjava.util.ValidationUtil.getErrorResponse;
+import static ru.javawebinar.topjava.util.ValidationUtil.messages;
 import static ru.javawebinar.topjava.util.exception.ErrorType.*;
 
 @RestControllerAdvice(annotations = RestController.class)
@@ -47,14 +47,14 @@ public class ExceptionInfoHandler {
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)  // 422
     @ExceptionHandler({IllegalRequestDataException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
     public ErrorInfo illegalRequestDataError(HttpServletRequest req, Exception e) {
-        return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR);
+        return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, e.getMessage());
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY) // 422
     @ExceptionHandler({BindException.class, MethodArgumentNotValidException.class})
     public ErrorInfo validationException(HttpServletRequest req, Exception e) {
         BindingResult result = e instanceof BindException?( (BindException) e ).getBindingResult():( (MethodArgumentNotValidException) e ).getBindingResult();
-        return logAndGetErrorInfo(req, e, true, VALIDATION_ERROR, getErrorResponse(result));
+        return logAndGetErrorInfo(req, e, true, VALIDATION_ERROR, messages(result));
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

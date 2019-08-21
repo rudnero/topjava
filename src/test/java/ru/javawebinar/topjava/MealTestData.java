@@ -35,7 +35,7 @@ public class MealTestData {
         return new Meal(MEAL1_ID, MEAL1.getDateTime(), "Обновленный завтрак", 200);
     }
 
-    public static Meal Invalid() {
+    public static Meal invalid() {
         return new Meal(null, null, null, 0);
     }
 
